@@ -456,10 +456,10 @@ This project is licensed under the **MIT License** - see [LICENSE](LICENSE) file
 
 ## 👥 Team & Contact
 
-**Project Maintainer**: Your Name  
-**Email**: your.email@example.com  
-**GitHub**: [@yourusername](https://github.com/yourusername)  
-**LinkedIn**: [Your Profile](https://linkedin.com/in/yourprofile)
+**Project Maintainer**: Jay Gautam 
+**Email**: jaygaautam@gmail.com 
+**GitHub**: [@Jay121305](https://github.com/Jay121305)  
+**LinkedIn**: (https://www.linkedin.com/in/jay-gautam/)
 
 ### Acknowledgments
 
