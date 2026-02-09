@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { geminiMedicalAI } from '@/lib/geminiAI';
 import { groqMedicalAI } from '@/lib/groqAI';
 import { medicalAI } from '@/lib/medicalAI';
 
@@ -14,13 +15,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Try Groq first, fallback to medicalAI
+    // Try Gemini first, then Groq, then local fallback
     let response: string;
     try {
-      response = await groqMedicalAI.chatWithAssistant(message, language, context);
-    } catch (groqError) {
-      console.log('Groq failed, using fallback:', groqError);
-      response = await medicalAI.chatWithAssistant(message, language, context);
+      response = await geminiMedicalAI.chatWithAssistant(message, language, context);
+    } catch (geminiError) {
+      console.log('Gemini failed, trying Groq:', geminiError);
+      try {
+        response = await groqMedicalAI.chatWithAssistant(message, language, context);
+      } catch (groqError) {
+        console.log('Groq failed, using local fallback:', groqError);
+        response = await medicalAI.chatWithAssistant(message, language, context);
+      }
     }
 
     return NextResponse.json({ response });
@@ -35,6 +41,7 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE() {
   try {
+    geminiMedicalAI.clearHistory();
     groqMedicalAI.clearHistory();
     medicalAI.clearHistory();
     return NextResponse.json({ message: 'Chat history cleared' });

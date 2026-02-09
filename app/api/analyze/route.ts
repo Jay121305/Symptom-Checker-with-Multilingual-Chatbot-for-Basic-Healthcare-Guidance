@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { geminiMedicalAI } from '@/lib/geminiAI';
 import { groqMedicalAI } from '@/lib/groqAI';
 import { medicalAI } from '@/lib/medicalAI';
 
@@ -14,23 +15,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Try Groq first, fallback to medicalAI
+    // Try Gemini first, then Groq, then local fallback
     let analysis;
     try {
-      analysis = await groqMedicalAI.analyzeSymptoms(
-        symptoms,
-        vitals,
-        medicalHistory,
-        language
-      );
-    } catch (groqError) {
-      console.log('Groq failed, using fallback:', groqError);
-      analysis = await medicalAI.analyzeSymptoms(
-        symptoms,
-        vitals,
-        medicalHistory,
-        language
-      );
+      analysis = await geminiMedicalAI.analyzeSymptoms(symptoms, vitals, medicalHistory, language);
+    } catch (geminiError) {
+      console.log('Gemini failed, trying Groq:', geminiError);
+      try {
+        analysis = await groqMedicalAI.analyzeSymptoms(symptoms, vitals, medicalHistory, language);
+      } catch (groqError) {
+        console.log('Groq failed, using local fallback:', groqError);
+        analysis = await medicalAI.analyzeSymptoms(symptoms, vitals, medicalHistory, language);
+      }
     }
 
     return NextResponse.json(analysis);

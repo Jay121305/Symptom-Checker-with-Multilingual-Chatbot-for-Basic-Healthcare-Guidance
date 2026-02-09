@@ -21,6 +21,10 @@ import ABHAIntegration from '@/components/ABHAIntegration';
 import DataExport from '@/components/DataExport';
 import PushNotificationSettings from '@/components/PushNotificationSettings';
 import ClinicalSymptomChecker from '@/components/ClinicalSymptomChecker';
+import DoctorConsultation from '@/components/DoctorConsultation';
+import IoTDevicePairing from '@/components/IoTDevicePairing';
+import PaymentGateway from '@/components/PaymentGateway';
+import { useDemoMode, DEMO_PERSONAS, PILOT_STATS } from '@/lib/demoMode';
 import { FamilyProfile, SymptomAnalysis } from '@/types';
 import {
   Activity,
@@ -52,7 +56,12 @@ import {
   UserCheck,
   ExternalLink,
   Download,
-  Bell
+  Bell,
+  Video,
+  Bluetooth,
+  Wallet,
+  Presentation,
+  Zap
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { URGENCY_COLORS, URGENCY_ICONS } from '@/lib/constants';
@@ -111,8 +120,17 @@ export default function Home() {
   const [showABHA, setShowABHA] = useState(false);
   const [showDataExport, setShowDataExport] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showDoctor, setShowDoctor] = useState(false);
+  const [showIoT, setShowIoT] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
+
+  // Demo mode
+  const { isDemoMode, toggleDemoMode, currentPersona, setPersona } = useDemoMode();
 
   const healthTools = [
+    { id: 'doctor', name: isHindi ? 'डॉक्टर कॉल' : 'Doctor Video Call', icon: Video, color: 'from-blue-600 to-indigo-600', badge: 'NEW' },
+    { id: 'iot', name: isHindi ? 'IoT डिवाइस' : 'IoT Devices', icon: Bluetooth, color: 'from-cyan-500 to-blue-600', badge: 'NEW' },
+    { id: 'payment', name: isHindi ? 'भुगतान' : 'Payment', icon: Wallet, color: 'from-green-600 to-emerald-600', badge: 'NEW' },
     { id: 'voice', name: isHindi ? 'आवाज मोड' : 'Voice Mode', icon: Mic, color: 'from-violet-500 to-purple-600', badge: 'NEW' },
     { id: 'whatsapp', name: 'WhatsApp Bot', icon: Smartphone, color: 'from-green-500 to-green-600', badge: 'NEW' },
     { id: 'abha', name: isHindi ? 'ABHA लिंक' : 'ABHA Link', icon: CreditCard, color: 'from-orange-500 to-orange-600', badge: 'NEW' },
@@ -129,12 +147,25 @@ export default function Home() {
 
   // Professional dashboard links
   const dashboardLinks = [
+    { id: 'impact', name: isHindi ? 'प्रभाव सांख्यिकी' : 'Impact Statistics', icon: TrendingUp, href: '/impact', color: 'from-blue-600 to-indigo-600', description: isHindi ? 'वास्तविक दुनिया के प्रभाव और डेटा' : 'Real-world impact and data' },
     { id: 'asha', name: isHindi ? 'ASHA डैशबोर्ड' : 'ASHA Dashboard', icon: UserCheck, href: '/asha', color: 'from-green-600 to-teal-600' },
     { id: 'outbreak', name: isHindi ? 'प्रकोप निगरानी' : 'Outbreak Surveillance', icon: BarChart3, href: '/outbreak', color: 'from-red-600 to-purple-600' },
   ];
 
   const handleToolClick = (toolId: string) => {
     // Handle special modal-based tools
+    if (toolId === 'doctor') {
+      setShowDoctor(true);
+      return;
+    }
+    if (toolId === 'iot') {
+      setShowIoT(true);
+      return;
+    }
+    if (toolId === 'payment') {
+      setShowPayment(true);
+      return;
+    }
     if (toolId === 'voice') {
       setShowVoiceMode(true);
       return;
@@ -332,7 +363,9 @@ export default function Home() {
                               <div>
                                 <p className="font-bold">{link.name}</p>
                                 <p className="text-sm opacity-80">
-                                  {link.id === 'asha'
+                                  {'description' in link 
+                                    ? link.description
+                                    : link.id === 'asha'
                                     ? (isHindi ? 'स्वास्थ्य कार्यकर्ताओं के लिए' : 'For health workers')
                                     : (isHindi ? 'रोग निगरानी प्रणाली' : 'Disease surveillance system')}
                                 </p>
@@ -431,6 +464,54 @@ export default function Home() {
         )}
         {showNotifications && (
           <PushNotificationSettings language={language} onClose={() => setShowNotifications(false)} />
+        )}
+        {showDoctor && (
+          <DoctorConsultation language={language} onClose={() => setShowDoctor(false)} />
+        )}
+        {showIoT && (
+          <IoTDevicePairing language={language} onClose={() => setShowIoT(false)} />
+        )}
+        {showPayment && (
+          <PaymentGateway language={language} onClose={() => setShowPayment(false)} />
+        )}
+
+        {/* Demo Mode Floating Panel */}
+        {isDemoMode && (
+          <motion.div
+            initial={{ x: 100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            className="fixed bottom-4 right-4 z-50 bg-gradient-to-br from-purple-600 to-indigo-700 text-white rounded-2xl shadow-2xl p-4 max-w-xs"
+          >
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <Zap className="w-4 h-4 text-yellow-300" />
+                <span className="font-bold text-sm">DEMO MODE</span>
+              </div>
+              <button onClick={toggleDemoMode} className="text-white/70 hover:text-white text-xs">
+                ✕
+              </button>
+            </div>
+            <div className="space-y-1">
+              {DEMO_PERSONAS.map((persona) => (
+                <button
+                  key={persona.id}
+                  onClick={() => setPersona(persona)}
+                  className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-all ${
+                    currentPersona?.id === persona.id ? 'bg-white/20 font-semibold' : 'hover:bg-white/10'
+                  }`}
+                >
+                  <span className="mr-1">{persona.avatar}</span>
+                  {persona.name}, {persona.age}
+                </button>
+              ))}
+            </div>
+            <div className="mt-3 pt-3 border-t border-white/20 grid grid-cols-2 gap-2 text-xs">
+              <div><span className="text-white/60">Users:</span> <span className="font-bold">{PILOT_STATS.totalUsers}</span></div>
+              <div><span className="text-white/60">Consults:</span> <span className="font-bold">{PILOT_STATS.consultations}</span></div>
+              <div><span className="text-white/60">Accuracy:</span> <span className="font-bold">{PILOT_STATS.accuracy}%</span></div>
+              <div><span className="text-white/60">Saved:</span> <span className="font-bold">₹{(PILOT_STATS.costSaved/1000).toFixed(0)}K</span></div>
+            </div>
+          </motion.div>
         )}
       </div>
     </ThemeContext.Provider>
