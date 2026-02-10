@@ -75,7 +75,7 @@ const ThemeContext = createContext<{
   toggleDarkMode: () => void;
 }>({ darkMode: false, toggleDarkMode: () => { } });
 
-export const useTheme = () => useContext(ThemeContext);
+const useTheme = () => useContext(ThemeContext);
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<Tab>('chat');

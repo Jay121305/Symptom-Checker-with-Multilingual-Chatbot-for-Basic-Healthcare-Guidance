@@ -1,9 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { checkRateLimit, getRateLimitHeaders, RATE_LIMITS } from '@/lib/rateLimit';
+import { trackEvent } from '@/lib/analytics';
+import { logError } from '@/lib/errorLogger';
 
 // Emergency notification system
 // In production, integrate with Twilio SMS, WhatsApp, or local emergency services API
 export async function POST(request: NextRequest) {
   try {
+    // Rate limit emergency alerts (prevent spam, but allow genuine emergencies)
+    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+    const limit = checkRateLimit(`emergency:${ip}`, RATE_LIMITS.emergency.maxRequests, RATE_LIMITS.emergency.windowMs);
+
+    if (!limit.allowed) {
+      return NextResponse.json(
+        { error: 'Multiple alerts already sent. Help is on the way.', retryAfter: limit.retryAfter },
+        { status: 429, headers: getRateLimitHeaders(limit) }
+      );
+    }
+
     const body = await request.json();
     const { userId, location, symptoms, vitals, emergencyContacts } = body;
 
@@ -15,6 +29,13 @@ export async function POST(request: NextRequest) {
       timestamp: new Date().toISOString(),
     });
 
+    // Track emergency event
+    trackEvent('emergency', {
+      symptoms,
+      hasLocation: !!location,
+      contactCount: emergencyContacts?.length || 0,
+    });
+
     // In production:
     // 1. Send SMS to emergency contacts
     // 2. Alert nearby hospitals/clinics
@@ -22,7 +43,7 @@ export async function POST(request: NextRequest) {
     // 4. Track ambulance response
 
     const notificationResults = await sendEmergencyNotifications(
-      emergencyContacts,
+      emergencyContacts || [],
       { location, symptoms, vitals }
     );
 
@@ -31,8 +52,14 @@ export async function POST(request: NextRequest) {
       message: 'Emergency services notified',
       notificationsSent: notificationResults.length,
       timestamp: new Date().toISOString(),
+      estimatedResponseTime: '10-15 minutes',
+    }, { headers: getRateLimitHeaders(limit) });
+  } catch (error: any) {
+    logError('Emergency', error.message || 'Unknown error', {
+      route: '/api/emergency',
+      severity: 'critical',
     });
-  } catch (error) {
+    trackEvent('error', { route: '/api/emergency' });
     console.error('Emergency notification error:', error);
     return NextResponse.json(
       { error: 'Failed to send emergency notifications' },
