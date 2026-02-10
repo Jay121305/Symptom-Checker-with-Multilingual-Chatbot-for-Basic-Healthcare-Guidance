@@ -538,7 +538,7 @@ export const DIALECT_PHRASES: Record<string, Record<string, string>> = {
         emergency: 'यह आपातकाल है!',
         callDoctor: 'कृपया डॉक्टर से मिलें',
     },
-    // Bhojpuri influenced Hindi (common in UP/Bihar)
+    // Bhojpuri influenced Hindi (common in Maharashtra/rural areas)
     'hi-bhoj': {
         welcome: 'डीपब्लू हेल्थ में रउआ के स्वागत बा',
         howAreYou: 'आज तबियत कइसन बा?',

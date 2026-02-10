@@ -168,7 +168,7 @@ A comprehensive visual dashboard showing:
 
 ### 1. **Start with Niche, Then Scale**
 Don't try to serve all of India. Focus on:
-- **One state first** (Bihar/UP have highest need)
+- **One state first** (Maharashtra has strong digital infrastructure)
 - **One use case** (diabetes/hypertension management)  
 - **One channel** (ASHA worker network)
 - **Prove ROI**, then expand
@@ -204,8 +204,8 @@ PREMIUM (₹99/month or ₹999/year):
 
 ### 5. **White-Label for Government**
 Package as "State Health App" for each state:
-- Bihar Health Assistant (powered by DeepBlue)
-- UP Health Mitra (powered by DeepBlue)
+- Maharashtra Health Assistant (powered by DeepBlue)
+- Pune Arogya Mitra (powered by DeepBlue)
 - They get branding, you get volume
 - ₹50-100 per user/year license fee
 - 1M users = ₹5-10 crore/year per state

@@ -39,7 +39,7 @@ A comprehensive AI-powered healthcare assistant that provides:
 
 ### 📊 Pilot Study Results (4 Weeks)
 
-**Real-world validation from 12 villages in Bihar & UP:**
+**Real-world validation from 12 villages in Maharashtra:**
 
 - ✅ **847 users** enrolled across rural pilot sites
 - ✅ **2,156 consultations** completed (avg 2.5 per user)
@@ -411,8 +411,8 @@ deepblue-health/
 
 ## 📊 Demo Scenarios (Pilot-Validated)
 
-### Scenario 1: Ramesh Kumar - Farmer with Diabetes (Age 55)
-**Location**: Araria, Bihar | **Condition**: Type 2 Diabetes + Hypertension
+### Scenario 1: Sachin Patil - Farmer with Diabetes (Age 55)
+**Location**: Baramati, Maharashtra | **Condition**: Type 2 Diabetes + Hypertension
 
 1. Opens app in Hindi voice mode
 2. Says: "मुझे चक्कर आ रहे हैं" (I'm feeling dizzy)
@@ -422,8 +422,8 @@ deepblue-health/
 6. Tracks vitals for 2 weeks → glucose drops to 140 mg/dL
 7. **Real outcome**: Prevented hospitalization, saved ₹8,000
 
-### Scenario 2: Priya Devi - Pregnant Woman (Age 28)
-**Location**: Sitapur, UP | **Condition**: Anemia during pregnancy
+### Scenario 2: Sneha Jadhav - Pregnant Woman (Age 28)
+**Location**: Satara, Maharashtra | **Condition**: Anemia during pregnancy
 
 1. Reports fatigue and weakness in Bhojpuri
 2. Connected BP monitor shows low blood pressure
@@ -434,8 +434,8 @@ deepblue-health/
 7. Prescription for iron tablets + diet plan
 8. **Real outcome**: Anemia caught early, healthy delivery
 
-### Scenario 3: Kamla Devi - Emergency Chest Pain (Age 65)
-**Location**: Patna, Bihar | **Emergency Scenario**
+### Scenario 3: Mangal Kulkarni - Emergency Chest Pain (Age 65)
+**Location**: Pune, Maharashtra | **Emergency Scenario**
 
 1. Severe chest pain at 3 AM (no doctor available)
 2. Smartwatch detects irregular heartbeat (HR: 132)
@@ -446,8 +446,8 @@ deepblue-health/
 7. Ambulance arrives in 18 minutes
 8. **Real outcome**: Life saved - was a heart attack
 
-### Scenario 4: Sunita Sharma - ASHA Worker (Age 35)
-**Location**: Managing 12 villages in Bihar
+### Scenario 4: Aarti Deshmukh - ASHA Worker (Age 35)
+**Location**: Managing 12 villages in Maharashtra
 
 1. Uses ASHA dashboard to track village health
 2. Triages 15 patients in 2 hours using mobile app
@@ -582,7 +582,7 @@ This project is licensed under the **MIT License** - see [LICENSE](LICENSE) file
 - **Groq** for LLaMA 3.3 70B fallback API
 - **Next.js Team** for the amazing framework
 - **Open Source Community** for invaluable tools and libraries
-- **Healthcare Professionals** in Bihar & UP who validated the pilot
+- **Healthcare Professionals** in Maharashtra who validated the pilot
 - **847 pilot users** who trusted us with their health
 
 ---

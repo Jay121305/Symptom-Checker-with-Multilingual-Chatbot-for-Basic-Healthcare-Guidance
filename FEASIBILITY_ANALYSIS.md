@@ -380,10 +380,10 @@ DO NOT WAIT. Seek immediate medical attention.
 Create testimonials:
 ```
 "DeepBlue saved my father's life. The app detected heart attack symptoms
-and we reached hospital in time." - Ramesh, Uttar Pradesh
+and we reached hospital in time." - Sachin, Maharashtra
 
 "No English, no problem! Voice support in Hindi made it easy for my mother 
-to check her diabetes." - Priya, Bihar
+to check her diabetes." - Sneha, Maharashtra
 
 [Video testimonials from real users]
 ```

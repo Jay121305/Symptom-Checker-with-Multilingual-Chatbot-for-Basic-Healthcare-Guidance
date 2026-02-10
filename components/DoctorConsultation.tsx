@@ -14,10 +14,10 @@ interface DoctorConsultationProps {
 }
 
 const MOCK_DOCTORS = [
-  { id: '1', name: 'Dr. Anita Sharma', nameHi: 'डॉ. अनीता शर्मा', specialty: 'General Medicine', specialtyHi: 'सामान्य चिकित्सा', experience: '15 years', rating: 4.8, reviews: 342, available: true, fee: 199, avatar: '👩‍⚕️', hospital: 'PHC Araria' },
-  { id: '2', name: 'Dr. Rajesh Patel', nameHi: 'डॉ. राजेश पटेल', specialty: 'Cardiology', specialtyHi: 'हृदय रोग', experience: '20 years', rating: 4.9, reviews: 518, available: true, fee: 499, avatar: '👨‍⚕️', hospital: 'District Hospital Patna' },
-  { id: '3', name: 'Dr. Meera Krishnan', nameHi: 'डॉ. मीरा कृष्णन', specialty: 'Pediatrics', specialtyHi: 'बाल रोग', experience: '12 years', rating: 4.7, reviews: 256, available: false, fee: 299, avatar: '👩‍⚕️', hospital: 'CHC Sitapur' },
-  { id: '4', name: 'Dr. Arjun Singh', nameHi: 'डॉ. अर्जुन सिंह', specialty: 'Orthopedics', specialtyHi: 'हड्डी रोग', experience: '18 years', rating: 4.6, reviews: 189, available: true, fee: 399, avatar: '👨‍⚕️', hospital: 'AIIMS Patna' },
+  { id: '1', name: 'Dr. Anjali Joshi', nameHi: 'डॉ. अंजली जोशी', specialty: 'General Medicine', specialtyHi: 'सामान्य चिकित्सा', experience: '15 years', rating: 4.8, reviews: 342, available: true, fee: 199, avatar: '👩‍⚕️', hospital: 'PHC Baramati' },
+  { id: '2', name: 'Dr. Vikram Bhosale', nameHi: 'डॉ. विक्रम भोसले', specialty: 'Cardiology', specialtyHi: 'हृदय रोग', experience: '20 years', rating: 4.9, reviews: 518, available: true, fee: 499, avatar: '👨‍⚕️', hospital: 'Sassoon Hospital Pune' },
+  { id: '3', name: 'Dr. Meera Kulkarni', nameHi: 'डॉ. मीरा कुलकर्णी', specialty: 'Pediatrics', specialtyHi: 'बाल रोग', experience: '12 years', rating: 4.7, reviews: 256, available: false, fee: 299, avatar: '👩‍⚕️', hospital: 'CHC Satara' },
+  { id: '4', name: 'Dr. Amar Shinde', nameHi: 'डॉ. अमर शिंदे', specialty: 'Orthopedics', specialtyHi: 'हड्डी रोग', experience: '18 years', rating: 4.6, reviews: 189, available: true, fee: 399, avatar: '👨‍⚕️', hospital: 'BJ Medical College Pune' },
 ];
 
 type ConsultStep = 'select' | 'connecting' | 'call' | 'summary';

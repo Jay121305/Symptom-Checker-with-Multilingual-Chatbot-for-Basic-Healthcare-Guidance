@@ -70,11 +70,11 @@ export interface SymptomReport {
 // Sample ASHA data
 export const SAMPLE_ASHA_WORKER: AshaWorker = {
     id: 'asha-001',
-    name: 'Sunita Devi',
+    name: 'Aarti Deshmukh',
     phone: '+91 98765 43210',
-    village: 'Rampur',
-    district: 'Varanasi',
-    state: 'Uttar Pradesh',
+    village: 'Wadgaon',
+    district: 'Pune',
+    state: 'Maharashtra',
     assignedPatients: 847,
     registrationDate: new Date('2020-03-15'),
 };
@@ -82,11 +82,11 @@ export const SAMPLE_ASHA_WORKER: AshaWorker = {
 export const SAMPLE_PATIENTS: Patient[] = [
     {
         id: 'p-001',
-        name: 'Kamla Devi',
+        name: 'Mangal Kulkarni',
         age: 28,
         gender: 'female',
         phone: '+91 87654 32100',
-        address: 'House 45, Rampur Village',
+        address: 'House 45, Wadgaon Village',
         abhaId: '91-2345-6789-0123',
         riskLevel: 'high',
         riskFactors: ['Pregnancy', 'Anemia'],
@@ -102,11 +102,11 @@ export const SAMPLE_PATIENTS: Patient[] = [
     },
     {
         id: 'p-002',
-        name: 'Ramu Prasad',
+        name: 'Ganesh Pawar',
         age: 67,
         gender: 'male',
         phone: '+91 76543 21098',
-        address: 'House 12, Rampur Village',
+        address: 'House 12, Wadgaon Village',
         abhaId: '91-3456-7890-1234',
         riskLevel: 'critical',
         riskFactors: ['Diabetes', 'Hypertension', 'Age > 65'],
@@ -121,11 +121,11 @@ export const SAMPLE_PATIENTS: Patient[] = [
     },
     {
         id: 'p-003',
-        name: 'Sita Ram',
+        name: 'Savita Gaikwad',
         age: 45,
         gender: 'female',
         phone: '+91 65432 10987',
-        address: 'House 78, Rampur Village',
+        address: 'House 78, Wadgaon Village',
         riskLevel: 'medium',
         riskFactors: ['Obesity'],
         conditions: ['Joint pain'],
@@ -133,11 +133,11 @@ export const SAMPLE_PATIENTS: Patient[] = [
     },
     {
         id: 'p-004',
-        name: 'Mohan Lal',
+        name: 'Omkar More',
         age: 8,
         gender: 'male',
         phone: '+91 54321 09876',
-        address: 'House 23, Rampur Village',
+        address: 'House 23, Wadgaon Village',
         riskLevel: 'low',
         riskFactors: [],
         conditions: ['Healthy'],
@@ -149,11 +149,11 @@ export const SAMPLE_PATIENTS: Patient[] = [
     },
     {
         id: 'p-005',
-        name: 'Geeta Devi',
+        name: 'Rina Waghmare',
         age: 35,
         gender: 'female',
         phone: '+91 43210 98765',
-        address: 'House 56, Rampur Village',
+        address: 'House 56, Wadgaon Village',
         riskLevel: 'high',
         riskFactors: ['Pregnancy', 'Previous complications'],
         conditions: ['Pregnant - 28 weeks', 'History of miscarriage'],
@@ -164,11 +164,11 @@ export const SAMPLE_PATIENTS: Patient[] = [
     },
     {
         id: 'p-006',
-        name: 'Lakshmi Prasad',
+        name: 'Laxmi Sawant',
         age: 72,
         gender: 'female',
         phone: '+91 32109 87654',
-        address: 'House 89, Rampur Village',
+        address: 'House 89, Wadgaon Village',
         abhaId: '91-4567-8901-2345',
         riskLevel: 'high',
         riskFactors: ['Age > 65', 'Heart condition'],
@@ -183,7 +183,7 @@ export const SAMPLE_REFERRALS: Referral[] = [
     {
         id: 'ref-001',
         patientId: 'p-001',
-        patientName: 'Kamla Devi',
+        patientName: 'Mangal Kulkarni',
         referredTo: 'PHC',
         reason: 'Routine pregnancy checkup - 32 weeks',
         urgency: 'routine',
@@ -195,7 +195,7 @@ export const SAMPLE_REFERRALS: Referral[] = [
     {
         id: 'ref-002',
         patientId: 'p-002',
-        patientName: 'Ramu Prasad',
+        patientName: 'Ganesh Pawar',
         referredTo: 'District Hospital',
         reason: 'Uncontrolled blood pressure',
         urgency: 'urgent',
@@ -208,30 +208,30 @@ export const SAMPLE_REFERRALS: Referral[] = [
 
 // Outbreak detection sample data
 export const SAMPLE_SYMPTOM_REPORTS: SymptomReport[] = [
-    // Fever cluster in Rampur
-    { id: 'sr-001', symptom: 'Fever', location: 'Rampur', coordinates: { lat: 25.2677, lng: 82.9913 }, reportedAt: new Date('2024-01-15'), patientAge: 25, patientGender: 'male' },
-    { id: 'sr-002', symptom: 'Fever', location: 'Rampur', coordinates: { lat: 25.2680, lng: 82.9920 }, reportedAt: new Date('2024-01-15'), patientAge: 32, patientGender: 'female' },
-    { id: 'sr-003', symptom: 'Fever', location: 'Rampur', coordinates: { lat: 25.2675, lng: 82.9905 }, reportedAt: new Date('2024-01-16'), patientAge: 8, patientGender: 'male' },
-    { id: 'sr-004', symptom: 'Fever', location: 'Rampur', coordinates: { lat: 25.2682, lng: 82.9918 }, reportedAt: new Date('2024-01-16'), patientAge: 45, patientGender: 'female' },
-    { id: 'sr-005', symptom: 'Fever', location: 'Rampur', coordinates: { lat: 25.2678, lng: 82.9910 }, reportedAt: new Date('2024-01-17'), patientAge: 60, patientGender: 'male' },
+    // Fever cluster in Wadgaon
+    { id: 'sr-001', symptom: 'Fever', location: 'Wadgaon', coordinates: { lat: 18.5018, lng: 73.8636 }, reportedAt: new Date('2024-01-15'), patientAge: 25, patientGender: 'male' },
+    { id: 'sr-002', symptom: 'Fever', location: 'Wadgaon', coordinates: { lat: 18.5025, lng: 73.8642 }, reportedAt: new Date('2024-01-15'), patientAge: 32, patientGender: 'female' },
+    { id: 'sr-003', symptom: 'Fever', location: 'Wadgaon', coordinates: { lat: 18.5012, lng: 73.8628 }, reportedAt: new Date('2024-01-16'), patientAge: 8, patientGender: 'male' },
+    { id: 'sr-004', symptom: 'Fever', location: 'Wadgaon', coordinates: { lat: 18.5030, lng: 73.8640 }, reportedAt: new Date('2024-01-16'), patientAge: 45, patientGender: 'female' },
+    { id: 'sr-005', symptom: 'Fever', location: 'Wadgaon', coordinates: { lat: 18.5020, lng: 73.8632 }, reportedAt: new Date('2024-01-17'), patientAge: 60, patientGender: 'male' },
     // Diarrhea in nearby village
-    { id: 'sr-006', symptom: 'Diarrhea', location: 'Sultanpur', coordinates: { lat: 25.2800, lng: 83.0100 }, reportedAt: new Date('2024-01-14'), patientAge: 5, patientGender: 'male' },
-    { id: 'sr-007', symptom: 'Diarrhea', location: 'Sultanpur', coordinates: { lat: 25.2810, lng: 83.0110 }, reportedAt: new Date('2024-01-15'), patientAge: 3, patientGender: 'female' },
-    { id: 'sr-008', symptom: 'Diarrhea', location: 'Sultanpur', coordinates: { lat: 25.2805, lng: 83.0105 }, reportedAt: new Date('2024-01-16'), patientAge: 7, patientGender: 'male' },
+    { id: 'sr-006', symptom: 'Diarrhea', location: 'Shirur', coordinates: { lat: 18.8269, lng: 74.3874 }, reportedAt: new Date('2024-01-14'), patientAge: 5, patientGender: 'male' },
+    { id: 'sr-007', symptom: 'Diarrhea', location: 'Shirur', coordinates: { lat: 18.8275, lng: 74.3880 }, reportedAt: new Date('2024-01-15'), patientAge: 3, patientGender: 'female' },
+    { id: 'sr-008', symptom: 'Diarrhea', location: 'Shirur', coordinates: { lat: 18.8270, lng: 74.3877 }, reportedAt: new Date('2024-01-16'), patientAge: 7, patientGender: 'male' },
     // Cough cases spread
-    { id: 'sr-009', symptom: 'Cough', location: 'Rampur', coordinates: { lat: 25.2670, lng: 82.9900 }, reportedAt: new Date('2024-01-10'), patientAge: 40, patientGender: 'male' },
-    { id: 'sr-010', symptom: 'Cough', location: 'Mirzapur', coordinates: { lat: 25.1500, lng: 82.5700 }, reportedAt: new Date('2024-01-12'), patientAge: 55, patientGender: 'female' },
+    { id: 'sr-009', symptom: 'Cough', location: 'Wadgaon', coordinates: { lat: 18.5010, lng: 73.8620 }, reportedAt: new Date('2024-01-10'), patientAge: 40, patientGender: 'male' },
+    { id: 'sr-010', symptom: 'Cough', location: 'Bhor', coordinates: { lat: 18.1537, lng: 73.8414 }, reportedAt: new Date('2024-01-12'), patientAge: 55, patientGender: 'female' },
     // Normal spread cases
-    { id: 'sr-011', symptom: 'Headache', location: 'Rampur', coordinates: { lat: 25.2685, lng: 82.9925 }, reportedAt: new Date('2024-01-13'), patientAge: 28, patientGender: 'female' },
-    { id: 'sr-012', symptom: 'Body Pain', location: 'Varanasi', coordinates: { lat: 25.3176, lng: 83.0100 }, reportedAt: new Date('2024-01-14'), patientAge: 35, patientGender: 'male' },
+    { id: 'sr-011', symptom: 'Headache', location: 'Wadgaon', coordinates: { lat: 18.5035, lng: 73.8648 }, reportedAt: new Date('2024-01-13'), patientAge: 28, patientGender: 'female' },
+    { id: 'sr-012', symptom: 'Body Pain', location: 'Pune', coordinates: { lat: 18.5204, lng: 73.8567 }, reportedAt: new Date('2024-01-14'), patientAge: 35, patientGender: 'male' },
 ];
 
 export const SAMPLE_OUTBREAK_ALERTS: OutbreakAlert[] = [
     {
         id: 'alert-001',
         symptom: 'Fever',
-        location: 'Rampur Village',
-        coordinates: { lat: 25.2677, lng: 82.9913 },
+        location: 'Wadgaon Village',
+        coordinates: { lat: 18.5018, lng: 73.8636 },
         casesCount: 5,
         percentageIncrease: 150,
         detectedAt: new Date('2024-01-17'),
@@ -241,8 +241,8 @@ export const SAMPLE_OUTBREAK_ALERTS: OutbreakAlert[] = [
     {
         id: 'alert-002',
         symptom: 'Diarrhea',
-        location: 'Sultanpur Village',
-        coordinates: { lat: 25.2800, lng: 83.0100 },
+        location: 'Shirur Village',
+        coordinates: { lat: 18.8269, lng: 74.3874 },
         casesCount: 3,
         percentageIncrease: 200,
         detectedAt: new Date('2024-01-16'),
@@ -277,29 +277,29 @@ export interface MedicalRecord {
 
 export const SAMPLE_ABHA_PROFILE: ABHAProfile = {
     abhaNumber: '91-2345-6789-0123',
-    abhaAddress: 'kamladevi@abdm',
-    name: 'Kamla Devi',
+    abhaAddress: 'mangalkulkarni@abdm',
+    name: 'Mangal Kulkarni',
     gender: 'Female',
     yearOfBirth: 1996,
     mobile: '+91 87654 32100',
-    state: 'Uttar Pradesh',
-    district: 'Varanasi',
+    state: 'Maharashtra',
+    district: 'Pune',
     verified: true,
     linkedRecords: [
         {
             id: 'rec-001',
             type: 'prescription',
-            title: 'OPD Prescription - PHC Rampur',
-            facility: 'Primary Health Center, Rampur',
+            title: 'OPD Prescription - PHC Wadgaon',
+            facility: 'Primary Health Center, Wadgaon',
             date: new Date('2024-01-10'),
-            doctorName: 'Dr. Sharma',
+            doctorName: 'Dr. Joshi',
             summary: 'Iron supplements prescribed for mild anemia. Follow-up in 2 weeks.',
         },
         {
             id: 'rec-002',
             type: 'lab_report',
             title: 'Blood Test Report',
-            facility: 'District Hospital, Varanasi',
+            facility: 'Sassoon Hospital, Pune',
             date: new Date('2024-01-05'),
             summary: 'Hemoglobin: 10.2 g/dL (Low), Blood Sugar: Normal, All other parameters normal.',
         },
@@ -307,7 +307,7 @@ export const SAMPLE_ABHA_PROFILE: ABHAProfile = {
             id: 'rec-003',
             type: 'immunization',
             title: 'Tetanus Toxoid (TT) Vaccination',
-            facility: 'PHC Rampur',
+            facility: 'PHC Wadgaon',
             date: new Date('2023-12-15'),
             summary: 'TT-1 administered. Next dose due in 4 weeks.',
         },
@@ -326,7 +326,7 @@ export interface AyushmanEligibility {
 
 export const SAMPLE_AYUSHMAN_ELIGIBILITY: AyushmanEligibility = {
     eligible: true,
-    cardNumber: 'UP/VNS/2023/123456',
+    cardNumber: 'MH/PUN/2023/123456',
     coverageAmount: 500000,
     familyMembers: 5,
     expiryDate: new Date('2025-03-31'),

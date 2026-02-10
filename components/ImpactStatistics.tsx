@@ -158,10 +158,10 @@ export default function ImpactStatistics() {
 
   // Regional impact - pilot locations
   const regionalData = [
-    { state: 'Bihar (Araria)', impact: 94 },
-    { state: 'Bihar (Patna)', impact: 88 },
-    { state: 'UP (Sitapur)', impact: 82 },
-    { state: 'UP (Lucknow)', impact: 76 },
+    { state: 'Maharashtra (Baramati)', impact: 94 },
+    { state: 'Maharashtra (Pune)', impact: 88 },
+    { state: 'Maharashtra (Satara)', impact: 82 },
+    { state: 'Maharashtra (Nashik)', impact: 76 },
   ];
 
   return (
@@ -176,7 +176,7 @@ export default function ImpactStatistics() {
           🎯 Pilot Study Impact Statistics
         </h1>
         <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-          4-week field pilot across 12 villages in Bihar &amp; UP — 3 PHC clinics, 847 users
+          4-week field pilot across 12 villages in Maharashtra — 3 PHC clinics, 847 users
         </p>
         
         {/* Time Range Selector */}

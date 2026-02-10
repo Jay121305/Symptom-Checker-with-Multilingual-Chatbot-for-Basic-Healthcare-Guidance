@@ -98,22 +98,22 @@ export const DEMO_USERS = {
   patient: {
     userId: 'demo-patient-001',
     phoneNumber: '+91-9876543210',
-    name: 'Ramesh Kumar',
+    name: 'Sachin Patil',
     role: 'patient' as const,
-    village: 'Araria, Bihar',
+    village: 'Baramati, Maharashtra',
   },
   asha: {
     userId: 'demo-asha-001',
     phoneNumber: '+91-9876543211',
-    name: 'Sunita Sharma',
+    name: 'Aarti Deshmukh',
     role: 'asha' as const,
-    village: 'Sitapur, UP',
+    village: 'Satara, Maharashtra',
   },
   doctor: {
     userId: 'demo-doctor-001',
     phoneNumber: '+91-9876543212',
-    name: 'Dr. Anita Sharma',
+    name: 'Dr. Anjali Joshi',
     role: 'doctor' as const,
-    hospital: 'PHC Araria',
+    hospital: 'PHC Baramati',
   },
 };
