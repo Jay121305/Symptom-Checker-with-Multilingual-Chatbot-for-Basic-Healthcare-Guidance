@@ -107,7 +107,7 @@ Format:
     async chatWithAssistant(
         message: string,
         language: string = 'en',
-        context?: { symptoms?: string[]; vitals?: VitalSigns }
+        context?: { symptoms?: string[]; vitals?: VitalSigns; sentimentContext?: { mood: string; intensity: number; needsSupport: boolean; instruction: string } }
     ): Promise<string> {
         if (!GEMINI_AVAILABLE || !genAI) {
             return this.generateLocalChatResponse(message, language, context);
@@ -132,10 +132,26 @@ Important rules:
 - Be clear and simple in explanations
 - Keep responses concise (under 200 words)
 
+CODE-SWITCHING & DIALECT SUPPORT:
+- If the user writes in Hinglish (mixed Hindi/English like "mujhe bahut headache ho raha hai"), respond naturally in the SAME mixed style
+- If the user writes in any mixed-language format (Tanglish, Benglish, etc.), mirror their language style
+- Understand colloquial medical terms across Indian languages:
+  * "gas" / "गैस" = often means chest discomfort or bloating, NOT flatulence
+  * "body heat" / "शरीर में गर्मी" = general feeling of heat, assess for fever
+  * "sugar" / "शुगर" = diabetes
+  * "BP" / "बीपी" = blood pressure or hypertension
+  * "cold" / "ठंड लगना" = could mean common cold OR chills from fever
+  * "weakness" / "kamzori" = fatigue, could indicate anemia or nutritional deficiency
+  * "pet dard" / "पेट दर्द" = stomach pain (distinguish gastric, abdominal, menstrual)
+  * "chakkar aana" / "चक्कर आना" = dizziness
+  * "neend nahi aati" / "नींद नहीं आती" = insomnia, assess for anxiety/depression
+- When user uses culturally specific terms, interpret them in the medical context appropriate to Indian healthcare
+
 ${context?.symptoms ? `Current symptoms: ${context.symptoms.join(', ')}` : ''}
 ${context?.vitals ? `Current vitals: HR:${context.vitals.heartRate} BP:${context.vitals.bloodPressure?.systolic}/${context.vitals.bloodPressure?.diastolic}` : ''}
+${context?.sentimentContext ? `\nEMOTIONAL STATE: The user appears ${context.sentimentContext.mood} (intensity: ${context.sentimentContext.intensity}/10). ${context.sentimentContext.instruction}` : ''}
 
-CRITICAL: Respond ENTIRELY in ${targetLang}. Every word must be in ${targetLang}.`;
+CRITICAL: Respond ENTIRELY in ${targetLang}. Every word must be in ${targetLang}. Exception: if the user is code-switching (mixing languages), you may mirror their mixed-language style.`;
 
             this.conversationHistory.push({
                 role: 'user',

@@ -23,7 +23,11 @@ import PushNotificationSettings from '@/components/PushNotificationSettings';
 import ClinicalSymptomChecker from '@/components/ClinicalSymptomChecker';
 import DoctorConsultation from '@/components/DoctorConsultation';
 import IoTDevicePairing from '@/components/IoTDevicePairing';
-import PaymentGateway from '@/components/PaymentGateway';
+import LabReportDecoder from '@/components/LabReportDecoder';
+import PrescriptionDigitizer from '@/components/PrescriptionDigitizer';
+import DermatologyTriage from '@/components/DermatologyTriage';
+import MedicineIdentifier from '@/components/MedicineIdentifier';
+import DrugInteractionChecker from '@/components/DrugInteractionChecker';
 import { useDemoMode, DEMO_PERSONAS, PILOT_STATS } from '@/lib/demoMode';
 import { FamilyProfile, SymptomAnalysis } from '@/types';
 import {
@@ -59,9 +63,12 @@ import {
   Bell,
   Video,
   Bluetooth,
-  Wallet,
   Presentation,
-  Zap
+  Zap,
+  Eye,
+  FileText,
+  Beaker,
+  ScanLine
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { URGENCY_COLORS, URGENCY_ICONS } from '@/lib/constants';
@@ -122,15 +129,23 @@ export default function Home() {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showDoctor, setShowDoctor] = useState(false);
   const [showIoT, setShowIoT] = useState(false);
-  const [showPayment, setShowPayment] = useState(false);
+  const [showLabReport, setShowLabReport] = useState(false);
+  const [showPrescription, setShowPrescription] = useState(false);
+  const [showDermatology, setShowDermatology] = useState(false);
+  const [showMedicineId, setShowMedicineId] = useState(false);
+  const [showDrugInteraction, setShowDrugInteraction] = useState(false);
 
   // Demo mode
   const { isDemoMode, toggleDemoMode, currentPersona, setPersona } = useDemoMode();
 
   const healthTools = [
+    { id: 'labreport', name: isHindi ? 'लैब रिपोर्ट' : 'Lab Report Decoder', icon: FileText, color: 'from-violet-500 to-purple-600', badge: 'NEW' },
+    { id: 'prescription', name: isHindi ? 'प्रिस्क्रिप्शन' : 'Rx Digitizer', icon: ScanLine, color: 'from-sky-500 to-blue-600', badge: 'NEW' },
+    { id: 'dermatology', name: isHindi ? 'त्वचा जांच' : 'Skin Triage', icon: Eye, color: 'from-rose-500 to-pink-600', badge: 'NEW' },
+    { id: 'medicineid', name: isHindi ? 'दवा पहचान' : 'Medicine ID', icon: Pill, color: 'from-emerald-500 to-teal-600', badge: 'NEW' },
+    { id: 'druginteraction', name: isHindi ? 'दवा जांच' : 'Drug Interactions', icon: Beaker, color: 'from-amber-500 to-orange-600', badge: 'NEW' },
     { id: 'doctor', name: isHindi ? 'डॉक्टर कॉल' : 'Doctor Video Call', icon: Video, color: 'from-blue-600 to-indigo-600', badge: 'NEW' },
     { id: 'iot', name: isHindi ? 'IoT डिवाइस' : 'IoT Devices', icon: Bluetooth, color: 'from-cyan-500 to-blue-600', badge: 'NEW' },
-    { id: 'payment', name: isHindi ? 'भुगतान' : 'Payment', icon: Wallet, color: 'from-green-600 to-emerald-600', badge: 'NEW' },
     { id: 'voice', name: isHindi ? 'आवाज मोड' : 'Voice Mode', icon: Mic, color: 'from-violet-500 to-purple-600', badge: 'NEW' },
     { id: 'whatsapp', name: 'WhatsApp Bot', icon: Smartphone, color: 'from-green-500 to-green-600', badge: 'NEW' },
     { id: 'abha', name: isHindi ? 'ABHA लिंक' : 'ABHA Link', icon: CreditCard, color: 'from-orange-500 to-orange-600', badge: 'NEW' },
@@ -154,16 +169,32 @@ export default function Home() {
 
   const handleToolClick = (toolId: string) => {
     // Handle special modal-based tools
+    if (toolId === 'labreport') {
+      setShowLabReport(true);
+      return;
+    }
+    if (toolId === 'prescription') {
+      setShowPrescription(true);
+      return;
+    }
+    if (toolId === 'dermatology') {
+      setShowDermatology(true);
+      return;
+    }
+    if (toolId === 'medicineid') {
+      setShowMedicineId(true);
+      return;
+    }
+    if (toolId === 'druginteraction') {
+      setShowDrugInteraction(true);
+      return;
+    }
     if (toolId === 'doctor') {
       setShowDoctor(true);
       return;
     }
     if (toolId === 'iot') {
       setShowIoT(true);
-      return;
-    }
-    if (toolId === 'payment') {
-      setShowPayment(true);
       return;
     }
     if (toolId === 'voice') {
@@ -471,8 +502,20 @@ export default function Home() {
         {showIoT && (
           <IoTDevicePairing language={language} onClose={() => setShowIoT(false)} />
         )}
-        {showPayment && (
-          <PaymentGateway language={language} onClose={() => setShowPayment(false)} />
+        {showLabReport && (
+          <LabReportDecoder language={language} onClose={() => setShowLabReport(false)} />
+        )}
+        {showPrescription && (
+          <PrescriptionDigitizer language={language} onClose={() => setShowPrescription(false)} />
+        )}
+        {showDermatology && (
+          <DermatologyTriage language={language} onClose={() => setShowDermatology(false)} />
+        )}
+        {showMedicineId && (
+          <MedicineIdentifier language={language} onClose={() => setShowMedicineId(false)} />
+        )}
+        {showDrugInteraction && (
+          <DrugInteractionChecker language={language} onClose={() => setShowDrugInteraction(false)} />
         )}
 
         {/* Demo Mode Floating Panel */}
