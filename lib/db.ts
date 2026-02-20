@@ -2,6 +2,7 @@
 // Optional - gracefully handles missing MongoDB connection
 
 import mongoose from 'mongoose';
+import { logger } from '@/lib/logger';
 
 const MONGODB_URI = process.env.MONGODB_URI || '';
 const DB_AVAILABLE = !!MONGODB_URI && MONGODB_URI.length > 10;
@@ -24,7 +25,7 @@ if (!cached) {
  */
 export async function connectDB(): Promise<typeof mongoose | null> {
   if (!DB_AVAILABLE) {
-    console.log('MongoDB not configured - running in stateless mode');
+    logger.info('MongoDB not configured — running in stateless mode');
     return null;
   }
 
@@ -43,11 +44,11 @@ export async function connectDB(): Promise<typeof mongoose | null> {
     cached!.promise = mongoose
       .connect(MONGODB_URI, opts)
       .then((m) => {
-        console.log('✅ MongoDB connected successfully');
+        logger.info('MongoDB connected successfully');
         return m;
       })
       .catch((err) => {
-        console.error('❌ MongoDB connection failed:', err.message);
+        logger.error('MongoDB connection failed', { error: err.message });
         cached!.promise = null;
         throw err;
       });

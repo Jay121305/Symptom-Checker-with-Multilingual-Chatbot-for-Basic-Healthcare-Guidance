@@ -6,6 +6,8 @@ import { symptomCache } from '@/lib/cache';
 import { checkRateLimit, getRateLimitHeaders, RATE_LIMITS } from '@/lib/rateLimit';
 import { trackEvent } from '@/lib/analytics';
 import { logError } from '@/lib/errorLogger';
+import { logger } from '@/lib/logger';
+import { validateSymptoms, validateLanguage } from '@/lib/sanitize';
 
 export async function POST(request: NextRequest) {
   const startTime = Date.now();
@@ -23,29 +25,31 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { symptoms, vitals, medicalHistory, language = 'en' } = body;
+    const { symptoms, vitals, medicalHistory, language } = body;
 
-    if (!symptoms || !Array.isArray(symptoms) || symptoms.length === 0) {
+    // Input validation & sanitization
+    const symptomsCheck = validateSymptoms(symptoms);
+    if (!symptomsCheck.valid) {
       return NextResponse.json(
-        { error: 'Symptoms array is required' },
+        { error: symptomsCheck.error },
         { status: 400 }
       );
     }
+    const sanitizedSymptoms = symptomsCheck.sanitized;
+    const safeLanguage = validateLanguage(language);
 
-    // Check cache first
-    const cacheKey = symptomCache.constructor.prototype.constructor === undefined
-      ? `${[...symptoms].sort().join('|')}_${language}`
-      : (() => {
-          const sorted = [...symptoms].map((s: string) => s.toLowerCase().trim()).sort().join('|');
-          return `${sorted}_${language}`;
-        })();
+    // Check cache first — deterministic key from sorted, normalized symptoms
+    const cacheKey = (() => {
+      const sorted = sanitizedSymptoms.map((s: string) => s.toLowerCase().trim()).sort().join('|');
+      return `${sorted}_${safeLanguage}`;
+    })();
 
     const cached = symptomCache.get(cacheKey);
     if (cached) {
       trackEvent('symptom-analysis', {
-        symptoms,
+        symptoms: sanitizedSymptoms,
         urgency: cached.urgencyLevel,
-        language,
+        language: safeLanguage,
         provider: 'cache',
         responseTimeMs: Date.now() - startTime,
       });
@@ -57,20 +61,20 @@ export async function POST(request: NextRequest) {
       }, { headers: getRateLimitHeaders(limit) });
     }
 
-    // Try Gemini first, then Groq, then local fallback
+    // 3-tier AI cascade: Gemini → Groq → Local (never fails)
     let analysis;
     let provider = 'local';
     try {
-      analysis = await geminiMedicalAI.analyzeSymptoms(symptoms, vitals, medicalHistory, language);
+      analysis = await geminiMedicalAI.analyzeSymptoms(sanitizedSymptoms, vitals, medicalHistory, safeLanguage);
       provider = 'gemini';
     } catch (geminiError) {
-      console.log('Gemini failed, trying Groq:', geminiError);
+      logger.warn('Gemini analysis failed, falling back to Groq', { error: String(geminiError) });
       try {
-        analysis = await groqMedicalAI.analyzeSymptoms(symptoms, vitals, medicalHistory, language);
+        analysis = await groqMedicalAI.analyzeSymptoms(sanitizedSymptoms, vitals, medicalHistory, safeLanguage);
         provider = 'groq';
       } catch (groqError) {
-        console.log('Groq failed, using local fallback:', groqError);
-        analysis = await medicalAI.analyzeSymptoms(symptoms, vitals, medicalHistory, language);
+        logger.warn('Groq analysis failed, falling back to local engine', { error: String(groqError) });
+        analysis = await medicalAI.analyzeSymptoms(sanitizedSymptoms, vitals, medicalHistory, safeLanguage);
         provider = 'local';
       }
     }
@@ -80,11 +84,11 @@ export async function POST(request: NextRequest) {
 
     const responseTimeMs = Date.now() - startTime;
 
-    // Track analytics
+    // Track analytics event
     trackEvent('symptom-analysis', {
-      symptoms,
+      symptoms: sanitizedSymptoms,
       urgency: analysis.urgencyLevel,
-      language,
+      language: safeLanguage,
       provider,
       responseTimeMs,
     });
@@ -93,15 +97,17 @@ export async function POST(request: NextRequest) {
       { ...analysis, provider, responseTimeMs, cached: false },
       { headers: getRateLimitHeaders(limit) }
     );
-  } catch (error: any) {
-    logError('SymptomAnalysis', error.message || 'Unknown error', {
+  } catch (error: unknown) {
+    const errMsg = error instanceof Error ? error.message : 'Unknown error';
+    logError('SymptomAnalysis', errMsg, {
       route: '/api/analyze',
       severity: 'high',
+      stack: error instanceof Error ? error.stack : undefined,
     });
     trackEvent('error', { route: '/api/analyze' });
-    console.error('Symptom analysis error:', error);
+    logger.error('Symptom analysis request failed', { error: errMsg });
     return NextResponse.json(
-      { error: 'Failed to analyze symptoms' },
+      { error: 'Failed to analyze symptoms. Please try again.' },
       { status: 500 }
     );
   }

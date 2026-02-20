@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { checkRateLimit, getRateLimitHeaders, RATE_LIMITS } from '@/lib/rateLimit';
 import { trackEvent } from '@/lib/analytics';
 import { logError } from '@/lib/errorLogger';
+import { logger } from '@/lib/logger';
 
 // Emergency notification system
 // In production, integrate with Twilio SMS, WhatsApp, or local emergency services API
@@ -21,11 +22,10 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { userId, location, symptoms, vitals, emergencyContacts } = body;
 
-    console.log('🚨 EMERGENCY ALERT:', {
+    logger.info('EMERGENCY ALERT triggered', {
       userId,
-      location,
-      symptoms,
-      vitals,
+      hasLocation: !!location,
+      symptomCount: symptoms?.length || 0,
       timestamp: new Date().toISOString(),
     });
 
@@ -54,15 +54,17 @@ export async function POST(request: NextRequest) {
       timestamp: new Date().toISOString(),
       estimatedResponseTime: '10-15 minutes',
     }, { headers: getRateLimitHeaders(limit) });
-  } catch (error: any) {
-    logError('Emergency', error.message || 'Unknown error', {
+  } catch (error: unknown) {
+    const errMsg = error instanceof Error ? error.message : 'Unknown error';
+    logError('Emergency', errMsg, {
       route: '/api/emergency',
       severity: 'critical',
+      stack: error instanceof Error ? error.stack : undefined,
     });
     trackEvent('error', { route: '/api/emergency' });
-    console.error('Emergency notification error:', error);
+    logger.error('Emergency notification failed', { error: errMsg });
     return NextResponse.json(
-      { error: 'Failed to send emergency notifications' },
+      { error: 'Failed to send emergency notifications. Please call 108 directly.' },
       { status: 500 }
     );
   }

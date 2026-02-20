@@ -4,6 +4,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { checkRateLimit, getRateLimitHeaders, RATE_LIMITS } from '@/lib/rateLimit';
 import { connectDB, Patient, getConsultationHistory } from '@/lib/db';
+import { logger } from '@/lib/logger';
 
 // In-memory fallback when MongoDB is not available
 const inMemoryPatients = new Map<string, any>();
@@ -74,10 +75,11 @@ export async function POST(request: NextRequest) {
       patient: inMemoryPatients.get(phoneNumber),
       storage: 'in-memory',
     });
-  } catch (error: any) {
-    console.error('Patient create error:', error);
+  } catch (error: unknown) {
+    const errMsg = error instanceof Error ? error.message : 'Unknown error';
+    logger.error('Patient create failed', { error: errMsg });
     return NextResponse.json(
-      { error: error.message || 'Failed to save patient' },
+      { error: 'Failed to save patient. Please try again.' },
       { status: 500 }
     );
   }
@@ -143,10 +145,11 @@ export async function GET(request: NextRequest) {
       consultationHistory: [],
       storage: 'in-memory',
     });
-  } catch (error: any) {
-    console.error('Patient fetch error:', error);
+  } catch (error: unknown) {
+    const errMsg = error instanceof Error ? error.message : 'Unknown error';
+    logger.error('Patient fetch failed', { error: errMsg });
     return NextResponse.json(
-      { error: error.message || 'Failed to fetch patient' },
+      { error: 'Failed to fetch patient. Please try again.' },
       { status: 500 }
     );
   }

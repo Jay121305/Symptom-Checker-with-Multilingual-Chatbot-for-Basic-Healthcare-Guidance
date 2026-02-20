@@ -11,6 +11,31 @@
   --foreground: #000000;
 }
 
+/* ── Accessibility: Focus-visible ring for keyboard users ── */
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Reduce motion for users who prefer it ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Selection color  ── */
+::selection {
+  background-color: rgba(24, 144, 255, 0.2);
+  color: inherit;
+}
+
 /* Dark mode variables and styles */
 .dark {
   --background: #111827;

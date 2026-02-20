@@ -1,6 +1,8 @@
 // Error Logger - Shared utility for centralized error tracking
 // Separated from route handler to comply with Next.js export rules
 
+import { logger } from '@/lib/logger';
+
 export interface ErrorEntry {
   id: string;
   type: string;
@@ -20,7 +22,13 @@ const MAX_ERRORS = 200;
 let errorCounter = 0;
 
 /**
- * Log an error from any API route
+ * Log an error from any API route.
+ * Stores in the in-memory ring buffer and emits structured log output.
+ * 
+ * @param type - Error category (e.g., 'Chat', 'Emergency', 'VisionAnalysis')
+ * @param message - Human-readable error description
+ * @param options - Additional context: stack trace, route, severity, language
+ * @returns Unique error ID for tracking/reference
  */
 export function logError(
   type: string,
@@ -48,14 +56,19 @@ export function logError(
 
   errorStore.push(entry);
 
-  // Keep only last MAX_ERRORS
+  // Keep only last MAX_ERRORS (FIFO ring buffer)
   if (errorStore.length > MAX_ERRORS) {
     errorStore.splice(0, errorStore.length - MAX_ERRORS);
   }
 
-  // Log critical errors to console
+  // Emit structured log based on severity
+  const meta = { errorId: entry.id, type, route: options?.route };
   if (entry.severity === 'critical') {
-    console.error(`🚨 CRITICAL ERROR [${entry.route}]:`, message);
+    logger.error(`CRITICAL: ${message}`, meta);
+  } else if (entry.severity === 'high') {
+    logger.error(message, meta);
+  } else {
+    logger.warn(message, meta);
   }
 
   return entry.id;

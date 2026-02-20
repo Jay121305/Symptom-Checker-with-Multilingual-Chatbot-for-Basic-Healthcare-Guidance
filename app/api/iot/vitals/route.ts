@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { logger } from '@/lib/logger';
 
 // Simulated IoT device data generation
 // In production, this would connect to real IoT devices via MQTT/WebSocket
@@ -17,8 +18,8 @@ export async function GET(request: NextRequest) {
       data: vitalsData,
       status: 'connected',
     });
-  } catch (error) {
-    console.error('IoT data error:', error);
+  } catch (error: unknown) {
+    logger.error('IoT data fetch failed', { error: String(error) });
     return NextResponse.json(
       { error: 'Failed to fetch device data' },
       { status: 500 }
@@ -32,15 +33,15 @@ export async function POST(request: NextRequest) {
     const { deviceId, vitals } = body;
 
     // In production, store this data in a time-series database
-    console.log('Storing vitals data:', { deviceId, vitals });
+    logger.debug('Storing vitals data', { deviceId, vitalKeys: vitals ? Object.keys(vitals) : [] });
 
     return NextResponse.json({
       success: true,
       message: 'Vitals data stored successfully',
       timestamp: new Date().toISOString(),
     });
-  } catch (error) {
-    console.error('Store vitals error:', error);
+  } catch (error: unknown) {
+    logger.error('Store vitals failed', { error: String(error) });
     return NextResponse.json(
       { error: 'Failed to store vitals data' },
       { status: 500 }

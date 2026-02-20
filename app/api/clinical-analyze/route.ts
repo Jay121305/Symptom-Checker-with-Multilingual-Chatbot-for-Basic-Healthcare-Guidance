@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { clinicalEngine } from '@/lib/clinicalEngine';
 import { TemporalSymptom, PatientContext } from '@/types/clinicalTypes';
+import { logger } from '@/lib/logger';
 
 export async function POST(request: NextRequest) {
     try {
@@ -38,7 +39,10 @@ export async function POST(request: NextRequest) {
         const assessment = clinicalEngine.analyze(validatedSymptoms, context);
 
         // Privacy: Log only anonymized summary, not raw symptoms
-        console.log(`Clinical analysis: ${symptoms.length} symptoms, urgency: ${assessment.overallUrgency}`);
+        logger.info('Clinical analysis completed', {
+          symptomCount: symptoms.length,
+          urgency: assessment.overallUrgency,
+        });
 
         return NextResponse.json({
             success: true,
@@ -47,8 +51,9 @@ export async function POST(request: NextRequest) {
             privacyNote: 'Your symptom data was processed locally and is not stored.'
         });
 
-    } catch (error) {
-        console.error('Clinical analysis error:', error);
+    } catch (error: unknown) {
+        const errMsg = error instanceof Error ? error.message : 'Unknown error';
+        logger.error('Clinical analysis failed', { error: errMsg });
         return NextResponse.json(
             { success: false, error: 'Analysis failed. Please try again.' },
             { status: 500 }

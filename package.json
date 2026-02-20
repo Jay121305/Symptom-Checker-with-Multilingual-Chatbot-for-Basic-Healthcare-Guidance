@@ -1,14 +1,42 @@
 {
   "name": "deepblue-health",
-  "version": "1.0.0",
-  "description": "AI-Powered Multilingual Healthcare Assistant with IoT Integration",
+  "version": "2.0.0",
+  "description": "AI-Powered Multilingual Healthcare Assistant with IoT Integration, Gemini Vision, and Bayesian Clinical Engine for Rural India",
   "private": true,
+  "author": {
+    "name": "Jay Gautam",
+    "email": "jaygaautam@gmail.com",
+    "url": "https://github.com/Jay121305"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jay121305/Symptom-Checker-with-Multilingual-Chatbot-for-Basic-Healthcare-Guidance"
+  },
+  "license": "MIT",
+  "keywords": [
+    "healthcare",
+    "ai",
+    "telemedicine",
+    "rural-health",
+    "gemini-ai",
+    "iot-monitoring",
+    "multilingual",
+    "symptom-checker",
+    "medical-imaging",
+    "pwa"
+  ],
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "validate-env": "node -e \"require('./lib/env').validateEnv()\"",
+    "clean": "rm -rf .next out node_modules/.cache"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.30.0",

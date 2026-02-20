@@ -3,6 +3,8 @@ import { analyzeLabReport, digitizePrescription, identifyMedicine, analyzeSkinCo
 import { checkRateLimit, getRateLimitHeaders, RATE_LIMITS } from '@/lib/rateLimit';
 import { trackEvent } from '@/lib/analytics';
 import { logError } from '@/lib/errorLogger';
+import { logger } from '@/lib/logger';
+import { validateVisionType, validateImageUpload, validateLanguage } from '@/lib/sanitize';
 
 export async function POST(request: NextRequest) {
     const startTime = Date.now();
@@ -86,14 +88,16 @@ export async function POST(request: NextRequest) {
             { ...result, type, responseTimeMs },
             { headers: getRateLimitHeaders(limit) }
         );
-    } catch (error: any) {
-        logError('VisionAnalysis', error.message || 'Unknown error', {
+    } catch (error: unknown) {
+        const errMsg = error instanceof Error ? error.message : 'Unknown error';
+        logError('VisionAnalysis', errMsg, {
             route: '/api/vision-analyze',
             severity: 'high',
+            stack: error instanceof Error ? error.stack : undefined,
         });
-        console.error('Vision analysis error:', error);
+        logger.error('Vision analysis request failed', { error: errMsg });
         return NextResponse.json(
-            { error: 'Failed to process analysis request' },
+            { error: 'Failed to process analysis request. Please try again.' },
             { status: 500 }
         );
     }

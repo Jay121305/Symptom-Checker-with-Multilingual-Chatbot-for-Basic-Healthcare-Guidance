@@ -1,10 +1,11 @@
 // System Health Check & Monitoring Endpoint
-// Shows judges: production-ready observability and service awareness
+// Production-ready observability with service availability, cache stats, and env validation
 
 import { NextResponse } from 'next/server';
 import { symptomCache, chatCache } from '@/lib/cache';
 import { getRateLimitStats } from '@/lib/rateLimit';
 import { isDBAvailable } from '@/lib/db';
+import { validateEnv } from '@/lib/env';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,7 +31,7 @@ export async function GET() {
   const healthCheck = {
     status: overallStatus,
     timestamp: new Date().toISOString(),
-    version: '1.0.0',
+    version: '2.0.0',
     environment: process.env.NODE_ENV || 'development',
 
     // Service availability
@@ -84,6 +85,16 @@ export async function GET() {
 
     // Response time for this health check
     responseTimeMs: Date.now() - startTime,
+
+    // Environment validation status
+    envValidation: (() => {
+      const result = validateEnv();
+      return {
+        valid: result.valid,
+        warningCount: result.warnings.length,
+        availableServices: result.availableServices,
+      };
+    })(),
   };
 
   return NextResponse.json(healthCheck, {

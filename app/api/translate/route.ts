@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { logger } from '@/lib/logger';
 
 // Translation service for multilingual support
 // In production, integrate with Google Translate API or similar
@@ -24,8 +25,8 @@ export async function POST(request: NextRequest) {
       sourceLanguage,
       targetLanguage,
     });
-  } catch (error) {
-    console.error('Translation error:', error);
+  } catch (error: unknown) {
+    logger.error('Translation failed', { error: String(error) });
     return NextResponse.json(
       { error: 'Failed to translate text' },
       { status: 500 }
